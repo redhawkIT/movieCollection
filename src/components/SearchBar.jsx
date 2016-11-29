@@ -34,9 +34,10 @@ class SearchBar extends Component {
                  data-toggle='dropdown'
                  aria-haspopup='true'
                  aria-expanded='false'>
-                  Filter by 
+                  Filter by
                   <span className='caret'/>
                </button>
+               <button className='btn btn-default' onClick={this.props.toggleView}>Add Movie</button>
                <ul className='dropdown-menu dropdown-menu-right'>
                  <Btn searchBy={this.searchBy} term='Year'/>
                  <Btn searchBy={this.searchBy} term='Rating'/>
