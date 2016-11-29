@@ -28,7 +28,13 @@ class SearchBar extends Component {
               onChange={this.onInputChange}
             />
             <div className='input-group-btn'>
-               <button type='button' className='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Options
+               <button
+                 type='button'
+                 className='btn btn-default dropdown-toggle'
+                 data-toggle='dropdown'
+                 aria-haspopup='true'
+                 aria-expanded='false'>
+                  Filter by 
                   <span className='caret'/>
                </button>
                <ul className='dropdown-menu dropdown-menu-right'>
