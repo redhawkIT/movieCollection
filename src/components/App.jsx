@@ -105,8 +105,8 @@ class App extends Component {
      } else {
        return (
          <div>
-         <SearchBar filter={this.filter} toggleView={this.toggleView}/>
-         <MovieList movies={movies} remove={this.removeMovie}/>
+           <SearchBar filter={this.filter} toggleView={this.toggleView}/>
+           <MovieList movies={movies} remove={this.removeMovie}/>
          </div>
        )
      }

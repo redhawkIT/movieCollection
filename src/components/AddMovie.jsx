@@ -38,8 +38,6 @@ class AddMovie extends Component {
       const {title} = this.state
       this.setState({err: ''})
 
-      //if (!this.props.movies.length) return true
-
       const isTitle = this.props.movies.filter(movie => {
          return movie.title.toLowerCase() === title.toLowerCase()
       })
@@ -67,7 +65,6 @@ class AddMovie extends Component {
 
    render() {
      const {title, year, rating, genre, actors, err} = this.state
-     console.log(err)
       return (
         <form className='form-horizontal' onSubmit={this.handleSubmit}>
           {this.errorMsg(err)}
