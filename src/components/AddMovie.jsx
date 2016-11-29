@@ -6,7 +6,7 @@ const defaultState = {
    genre: 'N/A',
    actors: [],
    year: 'N/A',
-   err: undefined
+   err: ''
 }
 
 const FormItem = ({name, onChange, val}) => (
@@ -28,25 +28,24 @@ class AddMovie extends Component {
 
    handleSubmit = (event) => {
       event.preventDefault()
-      if (this.isValidData(this.state)) {
+      if (this.isValidData()) {
          this.props.addMovie(this.state)
          this.props.toggleView()
       }
-      this.setState(defaultState)
    }
 
    isValidData(state) {
-      const {title} = state
+      const {title} = this.state
       this.setState({err: ''})
 
-      if (!this.props.movies.length) return true
+      //if (!this.props.movies.length) return true
 
       const isTitle = this.props.movies.filter(movie => {
          return movie.title.toLowerCase() === title.toLowerCase()
       })
 
       if (!title.length) {
-         this.setState({err: 'Must enter a title'})
+         this.setState({err: 'A Title Is Required'})
          return false
       }
       if (isTitle.length) {
@@ -56,23 +55,33 @@ class AddMovie extends Component {
       return true
    }
 
+   errorMsg(err) {
+     if(err.length) {
+      return (
+        <h5 className='text-warning text-center'>{err}</h5>
+      )
+     }
+   }
+
    onChange = (item, e) => this.setState({[item.toLowerCase()]: e.target.value})
 
    render() {
      const {title, year, rating, genre, actors, err} = this.state
+     console.log(err)
       return (
-         <form className='form-horizontal' onSubmit={this.handleSubmit}>
-           <FormItem onChange={this.onChange} name='Title' val={title}/>
-           <FormItem onChange={this.onChange} name='Year' val={year}/>
-           <FormItem onChange={this.onChange} name='Rating' val={rating}/>
-           <FormItem onChange={this.onChange} name='Genre' val={genre}/>
-           <FormItem onChange={this.onChange} name='Actors' val={actors}/>
-            <div className='form-group'>
-               <div className='col-sm-offset-2 col-sm-10'>
-                  <button type='submit' className='btn btn-default'>Submit</button>
-               </div>
-            </div>
-         </form>
+        <form className='form-horizontal' onSubmit={this.handleSubmit}>
+          {this.errorMsg(err)}
+          <FormItem onChange={this.onChange} name='Title' val={title}/>
+          <FormItem onChange={this.onChange} name='Year' val={year}/>
+          <FormItem onChange={this.onChange} name='Rating' val={rating}/>
+          <FormItem onChange={this.onChange} name='Genre' val={genre}/>
+          <FormItem onChange={this.onChange} name='Actors' val={actors}/>
+           <div className='form-group'>
+              <div className='col-sm-offset-2 col-sm-10'>
+                 <button type='submit' className='btn btn-default'>Submit</button>
+              </div>
+           </div>
+        </form>
       )
    }
 }
