@@ -3,7 +3,7 @@ import NavBar from './NavBar'
 import SearchBar from './SearchBar'
 import AddMovie from './AddMovie'
 import MovieList from './MovieList'
-import {randomMovies} from '../helpers'
+import generateMockDB from '../generateMockDB'
 
 class App extends Component {
 
@@ -15,10 +15,11 @@ class App extends Component {
     }
 
    componentWillMount() {
-      this.setState({movies: randomMovies(250)})
+      const movies = JSON.parse(localStorage.getItem('movies')) || generateMockDB(5)
+      this.setState({movies})
    }
 
-   toggleView = () => this.setState({view: !this.state.view})
+   toggleView = () => this.setState({view: !this.state.view, search: false})
 
    filter = (filter, term) => {
       const movies = this.state.movies
@@ -68,42 +69,47 @@ class App extends Component {
       })
    }
 
-   displayView(view) {
-     const movies = this.state.search ? this.state.filterdMovies : this.state.movies
-
-      if (view) {
-         return (
-           <AddMovie
-             movies={movies}
-             addMovie={this.addMovie}
-             toggleView={this.toggleView}
-           />
-         )
-      } else {
-         return (
-            <div>
-               <SearchBar filter={this.filter}/>
-               <MovieList movies={movies} remove={this.removeMovie}/>
-            </div>
-         )
-      }
-   }
-
    removeMovie = (title) => {
       const movies = this.state.movies.filter(movie => {
         return movie.title !== title
       })
       this.setState({movies})
+      this.setLocalStorage(movies)
    }
 
    addMovie = (movie) => {
       if (movie.actors.length) {
          movie.actors = movie.actors.split(', ')
       }
+      const movies = this.state.movies.concat([movie])
 
-      this.setState({
-         movies: this.state.movies.concat([movie])
-      })
+      this.setState({movies})
+      this.setLocalStorage(movies)
+   }
+
+   setLocalStorage(movies) {
+     localStorage.setItem('movies', JSON.stringify(movies))
+   }
+
+   displayView(view) {
+     const movies = this.state.search ? this.state.filterdMovies : this.state.movies
+
+     if (view) {
+       return (
+         <AddMovie
+         movies={movies}
+         addMovie={this.addMovie}
+         toggleView={this.toggleView}
+         />
+       )
+     } else {
+       return (
+         <div>
+         <SearchBar filter={this.filter}/>
+         <MovieList movies={movies} remove={this.removeMovie}/>
+         </div>
+       )
+     }
    }
 
    render() {
